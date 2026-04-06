@@ -1,0 +1,5 @@
+{
+  "name": "ICOGenerator",
+  "description": "A professional web tool to convert images to ICO format with custom cropping and multi-resolution support.",
+  "requestFramePermissions": []
+}
