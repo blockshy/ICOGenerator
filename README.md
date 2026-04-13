@@ -4,7 +4,7 @@
 
 ICOGenerator 是一个本地图片转 ICO 的 Web 工具，支持上传图片后进行裁剪，并按多个分辨率分别生成 `.ico` 文件，适合为网站、桌面程序或快捷方式制作图标。
 
-项目部署网站：<https://ico.rsec.top>
+项目部署网站：<https://ico.tyukki.com>
 
 ### 功能特性
 
@@ -70,7 +70,7 @@ src/
 
 ICOGenerator is a web-based local image-to-ICO tool. It lets users upload an image, crop it visually, and export separate `.ico` files in multiple resolutions. It is suitable for website favicons, desktop apps, and shortcut icons.
 
-Project deployment website: <https://ico.rsec.top>
+Project deployment website: <https://ico.tyukki.com>
 
 ### Features
 
