@@ -18,6 +18,9 @@ export const translations = {
     aspectRatio: '宽高比',
     square: '正方形',
     original: '原比例',
+    themeLight: '切换到浅色模式',
+    themeDark: '切换到深色模式',
+    generating: '正在生成 ICO...',
   },
   en: {
     title: 'ICO Generator',
@@ -38,6 +41,9 @@ export const translations = {
     aspectRatio: 'Aspect Ratio',
     square: 'Square',
     original: 'Original',
+    themeLight: 'Switch to light mode',
+    themeDark: 'Switch to dark mode',
+    generating: 'Generating ICO...',
   }
 };
 

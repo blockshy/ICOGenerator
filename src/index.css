@@ -1,1 +1,710 @@
 @import "tailwindcss";
+
+:root {
+  color-scheme: light;
+  font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+  --brand-accent: #1f6b63;
+  --brand-accent-strong: #174f4b;
+  --brand-accent-soft: rgba(31, 107, 99, 0.1);
+  --brand-accent-border: rgba(31, 107, 99, 0.22);
+  --brand-accent-contrast: #f6fbfa;
+  --danger-accent: #bb3d2f;
+  --danger-soft: rgba(187, 61, 47, 0.08);
+  --danger-border: rgba(187, 61, 47, 0.2);
+  --app-bg:
+    radial-gradient(circle at top left, rgba(17, 29, 52, 0.08), transparent 30%),
+    radial-gradient(circle at right top, rgba(31, 107, 99, 0.08), transparent 26%),
+    linear-gradient(180deg, #f3f5f7 0%, #edf1f3 56%, #e8edef 100%);
+  --app-text: #182026;
+  --header-bg: rgba(255, 255, 255, 0.78);
+  --surface-bg: rgba(255, 255, 255, 0.86);
+  --surface-bg-strong: rgba(255, 255, 255, 0.94);
+  --surface-border: rgba(28, 39, 51, 0.09);
+  --surface-shadow: 0 28px 60px rgba(18, 28, 38, 0.07);
+  --surface-shadow-soft: 0 12px 30px rgba(18, 28, 38, 0.045);
+  --muted-text: #5f6974;
+  --subtle-text: #75808d;
+  --detail-bg: rgba(244, 247, 248, 0.92);
+  --hairline: rgba(17, 24, 39, 0.06);
+  --control-bg: rgba(255, 255, 255, 0.74);
+  --control-bg-hover: rgba(31, 107, 99, 0.09);
+  --control-border: rgba(28, 39, 51, 0.1);
+  --focus-ring: 0 0 0 3px color-mix(in srgb, var(--brand-accent) 28%, transparent);
+  --scrollbar-size: 11px;
+  --scrollbar-track: rgba(28, 39, 51, 0.06);
+  --scrollbar-thumb: rgba(31, 107, 99, 0.34);
+  --scrollbar-thumb-hover: rgba(31, 107, 99, 0.5);
+  background: var(--app-bg);
+  color: var(--app-text);
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --brand-accent: #67b9ad;
+  --brand-accent-strong: #8dd1c6;
+  --brand-accent-soft: rgba(103, 185, 173, 0.16);
+  --brand-accent-border: rgba(103, 185, 173, 0.34);
+  --brand-accent-contrast: #0d1716;
+  --danger-accent: #ff8d7f;
+  --danger-soft: rgba(255, 141, 127, 0.14);
+  --danger-border: rgba(255, 141, 127, 0.28);
+  --app-bg:
+    radial-gradient(circle at top left, rgba(103, 185, 173, 0.12), transparent 24%),
+    radial-gradient(circle at right top, rgba(118, 142, 173, 0.12), transparent 22%),
+    linear-gradient(180deg, #0f1418 0%, #161d23 56%, #1a2128 100%);
+  --app-text: #edf3f7;
+  --header-bg: rgba(18, 24, 30, 0.8);
+  --surface-bg: rgba(18, 24, 30, 0.86);
+  --surface-bg-strong: rgba(21, 27, 34, 0.94);
+  --surface-border: rgba(123, 138, 156, 0.2);
+  --surface-shadow: 0 28px 60px rgba(0, 0, 0, 0.32);
+  --surface-shadow-soft: 0 12px 30px rgba(0, 0, 0, 0.22);
+  --muted-text: #adb7c5;
+  --subtle-text: #93a0af;
+  --detail-bg: rgba(22, 28, 35, 0.94);
+  --hairline: rgba(148, 163, 184, 0.08);
+  --control-bg: rgba(21, 27, 34, 0.72);
+  --control-bg-hover: rgba(103, 185, 173, 0.14);
+  --control-border: rgba(148, 163, 184, 0.18);
+  --scrollbar-track: rgba(148, 163, 184, 0.08);
+  --scrollbar-thumb: rgba(103, 185, 173, 0.34);
+  --scrollbar-thumb-hover: rgba(141, 209, 198, 0.5);
+}
+
+html {
+  min-width: 320px;
+  min-height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+* {
+  box-sizing: border-box;
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+*::-webkit-scrollbar {
+  width: var(--scrollbar-size);
+  height: var(--scrollbar-size);
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+  border-radius: 999px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--scrollbar-thumb), color-mix(in srgb, var(--scrollbar-thumb) 72%, transparent));
+  border: 2px solid transparent;
+  border-radius: 999px;
+  background-clip: padding-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, var(--scrollbar-thumb-hover), color-mix(in srgb, var(--scrollbar-thumb-hover) 76%, transparent));
+  background-clip: padding-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: var(--app-bg);
+  color: var(--app-text);
+  transition: background 0.24s ease, color 0.24s ease;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button:focus-visible,
+input:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+#root,
+.ico-app {
+  min-height: 100vh;
+}
+
+.ico-app {
+  background: var(--app-bg);
+  color: var(--app-text);
+  transition: background 0.24s ease, color 0.24s ease;
+}
+
+.tool-shell-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  min-height: 72px;
+  border-bottom: 1px solid var(--surface-border);
+  background: var(--header-bg);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.05);
+  backdrop-filter: blur(18px);
+}
+
+.tool-shell-header-inner {
+  width: min(1120px, calc(100% - 32px));
+  min-height: 72px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.tool-brand,
+.tool-header-actions,
+.tool-icon-button,
+.tool-text-button,
+.tool-panel-title,
+.tool-drawer-title,
+.tool-primary-button,
+.tool-danger-button {
+  display: flex;
+  align-items: center;
+}
+
+.tool-brand {
+  min-width: 0;
+  gap: 12px;
+}
+
+.tool-brand-mark {
+  width: 38px;
+  height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  border: 1px solid var(--brand-accent-border);
+  border-radius: 13px;
+  background: linear-gradient(135deg, var(--brand-accent), var(--brand-accent-strong));
+  color: var(--brand-accent-contrast);
+  box-shadow: 0 12px 24px color-mix(in srgb, var(--brand-accent) 18%, transparent);
+}
+
+.tool-brand-title {
+  min-width: 0;
+  margin: 0;
+  color: var(--app-text);
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  font-weight: 700;
+  letter-spacing: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tool-header-actions {
+  flex: 0 0 auto;
+  gap: 8px;
+}
+
+.tool-icon-button,
+.tool-text-button {
+  height: 38px;
+  border: 1px solid var(--control-border);
+  border-radius: 999px;
+  background: var(--control-bg);
+  color: var(--muted-text);
+  transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
+}
+
+.tool-icon-button {
+  width: 38px;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
+}
+
+.tool-icon-button.compact {
+  width: 32px;
+  height: 32px;
+}
+
+.tool-text-button {
+  gap: 8px;
+  padding: 0 13px;
+  font-size: 0.86rem;
+  font-weight: 650;
+}
+
+.tool-icon-button svg,
+.tool-text-button svg {
+  display: block;
+  flex: 0 0 auto;
+}
+
+.tool-icon-button:hover,
+.tool-text-button:hover {
+  border-color: var(--brand-accent-border);
+  background: var(--control-bg-hover);
+  color: var(--brand-accent-strong);
+}
+
+:root[data-theme='dark'] .tool-icon-button:hover,
+:root[data-theme='dark'] .tool-text-button:hover {
+  color: var(--brand-accent-strong);
+}
+
+.tool-notification-dot {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  width: 8px;
+  height: 8px;
+  border: 2px solid var(--surface-bg-strong);
+  border-radius: 999px;
+  background: var(--brand-accent);
+}
+
+.tool-main {
+  width: min(1120px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 32px 0 40px;
+}
+
+.tool-surface,
+.ico-upload-zone {
+  border: 1px solid var(--surface-border);
+  border-radius: 18px;
+  background: var(--surface-bg);
+  box-shadow: var(--surface-shadow);
+  backdrop-filter: blur(18px);
+}
+
+.tool-surface-header {
+  min-height: 58px;
+  padding: 15px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.tool-panel-title {
+  gap: 8px;
+  margin: 0;
+  color: var(--app-text);
+  font-size: 0.96rem;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.tool-panel-title svg {
+  color: var(--brand-accent);
+}
+
+.tool-section-title {
+  margin: 0;
+  color: var(--app-text);
+  font-size: 1.06rem;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.tool-muted-text,
+.tool-label {
+  color: var(--muted-text);
+}
+
+.tool-muted-text {
+  font-size: 0.9rem;
+}
+
+.tool-label {
+  font-size: 0.86rem;
+  font-weight: 650;
+}
+
+.tool-mono-value {
+  color: var(--subtle-text);
+  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: 0.82rem;
+}
+
+.tool-divider-top {
+  border-top: 1px solid var(--hairline);
+}
+
+.ico-upload-zone {
+  min-height: 360px;
+  padding: clamp(38px, 8vw, 72px) 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  border-style: dashed;
+  border-width: 2px;
+  text-align: center;
+  transition: background 0.24s ease, border-color 0.24s ease, transform 0.24s ease;
+}
+
+.group:hover .ico-upload-zone {
+  border-color: var(--brand-accent-border);
+  background: var(--surface-bg-strong);
+  transform: translateY(-1px);
+}
+
+.ico-upload-icon {
+  width: 66px;
+  height: 66px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--brand-accent-border);
+  border-radius: 999px;
+  background: var(--brand-accent-soft);
+  color: var(--brand-accent);
+  transition: transform 0.24s ease, background 0.24s ease;
+}
+
+.group:hover .ico-upload-icon {
+  transform: scale(1.04);
+  background: color-mix(in srgb, var(--brand-accent-soft) 70%, var(--surface-bg-strong));
+}
+
+.ico-crop-stage {
+  position: relative;
+  height: min(52vh, 430px);
+  min-height: 320px;
+  background:
+    linear-gradient(45deg, rgba(255, 255, 255, 0.06) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(255, 255, 255, 0.06) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, rgba(255, 255, 255, 0.06) 75%),
+    linear-gradient(-45deg, transparent 75%, rgba(255, 255, 255, 0.06) 75%),
+    #111820;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+  background-size: 20px 20px;
+}
+
+.tool-range {
+  height: 6px;
+  border-radius: 999px;
+  accent-color: var(--brand-accent);
+  background: var(--detail-bg);
+  cursor: pointer;
+  appearance: none;
+}
+
+.ico-resolution-button {
+  min-height: 42px;
+  padding: 0 6px;
+  border: 1px solid var(--control-border);
+  border-radius: 12px;
+  background: var(--control-bg);
+  color: var(--muted-text);
+  font-size: 0.86rem;
+  font-weight: 700;
+  transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
+}
+
+.ico-resolution-button:hover {
+  border-color: var(--brand-accent-border);
+  color: var(--brand-accent-strong);
+  transform: translateY(-1px);
+}
+
+.ico-resolution-button.selected {
+  border-color: var(--brand-accent-border);
+  background: var(--brand-accent-soft);
+  color: var(--brand-accent-strong);
+  box-shadow: 0 12px 22px color-mix(in srgb, var(--brand-accent) 10%, transparent);
+}
+
+.tool-primary-button,
+.tool-danger-button {
+  min-height: 44px;
+  justify-content: center;
+  gap: 10px;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  padding: 0 16px;
+  font-weight: 750;
+  transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.tool-primary-button {
+  background: linear-gradient(135deg, var(--brand-accent), var(--brand-accent-strong));
+  color: var(--brand-accent-contrast);
+  box-shadow: 0 16px 28px color-mix(in srgb, var(--brand-accent) 20%, transparent);
+}
+
+.tool-primary-button:not(.disabled):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 20px 34px color-mix(in srgb, var(--brand-accent) 26%, transparent);
+}
+
+.tool-primary-button.disabled,
+.tool-primary-button:disabled {
+  cursor: not-allowed;
+  border-color: var(--control-border);
+  background: var(--detail-bg);
+  color: var(--subtle-text);
+  box-shadow: none;
+}
+
+.ico-preview-stage {
+  min-height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--hairline);
+  border-radius: 14px;
+  background: var(--detail-bg);
+  padding: 32px;
+}
+
+.ico-preview-box {
+  width: 66px;
+  height: 66px;
+  overflow: hidden;
+  border: 1px solid var(--surface-border);
+  border-radius: 10px;
+  background: var(--surface-bg-strong);
+  box-shadow: var(--surface-shadow-soft);
+}
+
+.ico-preview-size-label {
+  position: absolute;
+  bottom: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--subtle-text);
+  font-family: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+  font-size: 0.68rem;
+}
+
+.tool-skeleton {
+  background: color-mix(in srgb, var(--surface-border) 55%, transparent);
+}
+
+.tool-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: rgba(9, 15, 22, 0.46);
+  backdrop-filter: blur(8px);
+}
+
+.tool-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 70;
+  width: min(100vw, 420px);
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid var(--surface-border);
+  background: var(--surface-bg-strong);
+  box-shadow: -28px 0 60px rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(18px);
+}
+
+.tool-drawer-header,
+.tool-drawer-footer {
+  padding: 22px 24px;
+  border-color: var(--hairline);
+}
+
+.tool-drawer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+}
+
+.tool-drawer-footer {
+  border-top-width: 1px;
+  border-top-style: solid;
+}
+
+.tool-drawer-title {
+  gap: 9px;
+  margin: 0;
+  color: var(--app-text);
+  font-size: 1.16rem;
+  font-weight: 760;
+  letter-spacing: 0;
+}
+
+.tool-drawer-title svg {
+  color: var(--brand-accent);
+}
+
+.tool-empty-state {
+  height: 100%;
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--subtle-text);
+}
+
+.tool-history-item {
+  border: 1px solid var(--surface-border);
+  border-radius: 14px;
+  background: var(--detail-bg);
+  padding: 14px;
+  transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+}
+
+.tool-history-item:hover {
+  border-color: var(--brand-accent-border);
+  background: var(--surface-bg);
+  transform: translateY(-1px);
+}
+
+.tool-history-preview {
+  width: 50px;
+  height: 50px;
+  overflow: hidden;
+  flex: 0 0 auto;
+  border: 1px solid var(--surface-border);
+  border-radius: 12px;
+  background: var(--surface-bg-strong);
+}
+
+.tool-history-name {
+  margin: 0;
+  overflow: hidden;
+  color: var(--app-text);
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tool-history-time {
+  margin-top: 2px;
+  color: var(--subtle-text);
+  font-size: 0.76rem;
+}
+
+.tool-chip {
+  border: 1px solid var(--surface-border);
+  border-radius: 999px;
+  background: var(--control-bg);
+  color: var(--muted-text);
+  padding: 1px 7px;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+.tool-danger-icon-button {
+  align-self: flex-start;
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--subtle-text);
+  opacity: 0;
+  transition: opacity 0.18s ease, background 0.18s ease, color 0.18s ease;
+}
+
+.group:hover .tool-danger-icon-button,
+.tool-danger-icon-button:focus-visible {
+  opacity: 1;
+}
+
+.tool-danger-icon-button:hover {
+  background: var(--danger-soft);
+  color: var(--danger-accent);
+}
+
+.tool-danger-button {
+  width: 100%;
+  border-color: var(--danger-border);
+  background: var(--danger-soft);
+  color: var(--danger-accent);
+}
+
+.tool-danger-button:hover {
+  background: color-mix(in srgb, var(--danger-soft) 74%, var(--danger-accent));
+}
+
+.tool-toast {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transform: translateX(-50%);
+  border: 1px solid var(--surface-border);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--surface-bg-strong) 88%, #0f1418);
+  color: var(--app-text);
+  box-shadow: var(--surface-shadow);
+  padding: 12px 22px;
+  backdrop-filter: blur(18px);
+}
+
+@media (max-width: 640px) {
+  .tool-shell-header-inner,
+  .tool-main {
+    width: min(100% - 24px, 1120px);
+  }
+
+  .tool-shell-header-inner {
+    min-height: 66px;
+  }
+
+  .tool-brand-title {
+    font-size: 1rem;
+  }
+
+  .tool-brand-mark {
+    width: 34px;
+    height: 34px;
+    border-radius: 11px;
+  }
+
+  .tool-header-actions {
+    gap: 6px;
+  }
+
+  .tool-icon-button {
+    width: 36px;
+    height: 36px;
+  }
+
+  .tool-text-button {
+    height: 36px;
+    padding: 0 10px;
+  }
+
+  .tool-main {
+    padding: 22px 0 30px;
+  }
+
+  .ico-upload-zone {
+    min-height: 300px;
+    padding: 36px 18px;
+  }
+
+  .ico-crop-stage {
+    height: 380px;
+    min-height: 300px;
+  }
+}
