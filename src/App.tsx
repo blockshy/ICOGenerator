@@ -14,7 +14,7 @@ import {
   Sun
 } from 'lucide-react';
 import { cn, formatDate } from './lib/utils';
-import { translations, Language } from './lib/i18n';
+import { applyLanguage, cleanupLanguageQueryParam, readInitialLanguage, translations, Language } from './lib/i18n';
 import { applyTheme, cleanupThemeQueryParam, readInitialTheme } from './lib/theme';
 import type { ThemeMode } from './lib/theme';
 import { getCroppedImg, blobToBase64 } from './utils/canvas';
@@ -32,11 +32,7 @@ const COMMON_RESOLUTIONS = [16, 32, 48, 64, 128, 256];
 
 export default function App() {
   // --- State ---
-  const [language, setLanguage] = useState<Language>(() => {
-    const cached = localStorage.getItem('ico-gen-lang');
-    if (cached === 'zh' || cached === 'en') return cached;
-    return navigator.language.startsWith('zh') ? 'zh' : 'en';
-  });
+  const [language, setLanguage] = useState<Language>(() => readInitialLanguage());
   const [theme, setTheme] = useState<ThemeMode>(() => readInitialTheme());
 
   const [image, setImage] = useState<string | null>(null);
@@ -57,7 +53,8 @@ export default function App() {
 
   // --- Effects ---
   useEffect(() => {
-    localStorage.setItem('ico-gen-lang', language);
+    applyLanguage(language);
+    cleanupLanguageQueryParam();
   }, [language]);
 
   useEffect(() => {
