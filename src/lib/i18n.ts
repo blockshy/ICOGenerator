@@ -44,15 +44,38 @@ export const translations = {
     themeLight: 'Switch to light mode',
     themeDark: 'Switch to dark mode',
     generating: 'Generating ICO...',
+  },
+  ja: {
+    title: 'ICOジェネレーター',
+    upload: '画像を選択',
+    dragDrop: '画像をドラッグ＆ドロップ、またはクリックしてアップロード',
+    crop: '切り抜き領域を調整',
+    resolutions: '解像度を選択',
+    generate: '生成してダウンロード',
+    history: '生成履歴',
+    noHistory: '履歴はまだありません',
+    clearHistory: '履歴をクリア',
+    language: '言語',
+    success: '生成成功！',
+    error: '生成に失敗しました。もう一度お試しください',
+    download: 'ダウンロード',
+    delete: '削除',
+    preview: 'プレビュー',
+    aspectRatio: 'アスペクト比',
+    square: '正方形',
+    original: '元の比率',
+    themeLight: 'ライトモードに切り替え',
+    themeDark: 'ダークモードに切り替え',
+    generating: 'ICOを生成中...',
   }
 };
 
-export type Language = 'zh' | 'en';
+export type Language = 'zh' | 'en' | 'ja';
 
 export const languageStorageKey = 'ico-gen-lang';
 
 export function isLanguage(value: string | null): value is Language {
-  return value === 'zh' || value === 'en';
+  return value === 'zh' || value === 'en' || value === 'ja';
 }
 
 function normalizeLanguage(value: string | null): Language | null {
@@ -66,6 +89,9 @@ function normalizeLanguage(value: string | null): Language | null {
   }
   if (normalized === 'en' || normalized === 'en-us' || normalized.startsWith('en-')) {
     return 'en';
+  }
+  if (normalized === 'ja' || normalized === 'ja-jp' || normalized.startsWith('ja-')) {
+    return 'ja';
   }
   return null;
 }
@@ -86,11 +112,14 @@ export function readInitialLanguage(storageKey = languageStorageKey): Language {
     return stored;
   }
 
-  return window.navigator.language.toLowerCase().startsWith('zh') ? 'zh' : 'en';
+  const browserLang = window.navigator.language.toLowerCase();
+  if (browserLang.startsWith('zh')) return 'zh';
+  if (browserLang.startsWith('ja')) return 'ja';
+  return 'en';
 }
 
 export function applyLanguage(language: Language, storageKey = languageStorageKey) {
-  document.documentElement.lang = language === 'zh' ? 'zh-CN' : 'en';
+  document.documentElement.lang = language === 'zh' ? 'zh-CN' : language === 'ja' ? 'ja' : 'en';
   window.localStorage.setItem(storageKey, language);
 }
 

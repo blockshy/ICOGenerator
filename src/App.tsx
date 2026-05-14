@@ -1,17 +1,18 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import Cropper from 'react-easy-crop';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
-  Upload, 
-  Download, 
-  History, 
-  Languages, 
-  Trash2, 
+import {
+  Upload,
+  Download,
+  History,
+  Languages,
+  Trash2,
   Image as ImageIcon,
   X,
   Plus,
   Moon,
-  Sun
+  Sun,
+  ChevronDown
 } from 'lucide-react';
 import { cn, formatDate } from './lib/utils';
 import { applyLanguage, cleanupLanguageQueryParam, readInitialLanguage, translations, Language } from './lib/i18n';
@@ -51,11 +52,25 @@ export default function App() {
 
   const t = translations[language];
 
+  // Language dropdown
+  const [langOpen, setLangOpen] = useState(false);
+  const langRef = useRef<HTMLDivElement>(null);
+
   // --- Effects ---
   useEffect(() => {
     applyLanguage(language);
     cleanupLanguageQueryParam();
   }, [language]);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (langRef.current && !langRef.current.contains(e.target as Node)) {
+        setLangOpen(false);
+      }
+    };
+    if (langOpen) document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [langOpen]);
 
   useEffect(() => {
     localStorage.setItem('ico-gen-history', JSON.stringify(history));
@@ -189,15 +204,43 @@ export default function App() {
             >
               {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
             </button>
-            <button
-              onClick={() => setLanguage(language === 'zh' ? 'en' : 'zh')}
-              className="tool-text-button"
-              title={t.language}
-              aria-label={t.language}
-            >
-              <Languages className="w-4 h-4" />
-              {language.toUpperCase()}
-            </button>
+            <div className="relative" ref={langRef}>
+              <button
+                onClick={() => setLangOpen(!langOpen)}
+                className="tool-text-button flex items-center gap-1"
+                title={t.language}
+                aria-label={t.language}
+                aria-expanded={langOpen}
+              >
+                <Languages className="w-4 h-4" />
+                <span className="text-sm font-medium">{language.toUpperCase()}</span>
+                <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${langOpen ? 'rotate-180' : ''}`} />
+              </button>
+              {langOpen && (
+                <div className="absolute right-0 top-full mt-1 z-50 min-w-[80px] rounded-lg border py-1 shadow-lg backdrop-blur-xl"
+                  style={{
+                    background: 'var(--surface-bg-strong)',
+                    borderColor: 'var(--surface-border)',
+                  }}
+                >
+                  {(['zh', 'en', 'ja'] as Language[]).map(l => (
+                    <button
+                      key={l}
+                      onClick={() => { setLanguage(l); setLangOpen(false); }}
+                      className="w-full text-left px-3 py-1.5 text-sm transition-colors"
+                      style={{
+                        color: language === l ? 'var(--brand-accent-strong)' : 'var(--app-text)',
+                        background: language === l ? 'var(--brand-accent-soft)' : 'transparent',
+                      }}
+                      onMouseEnter={e => { if (language !== l) (e.target as HTMLElement).style.background = 'var(--control-bg-hover)'; }}
+                      onMouseLeave={e => { if (language !== l) (e.target as HTMLElement).style.background = 'transparent'; }}
+                    >
+                      {l === 'zh' ? '简体中文' : l === 'en' ? 'English' : '日本語'}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </header>
@@ -243,7 +286,7 @@ export default function App() {
                     <button
                       onClick={() => setImage(null)}
                       className="tool-icon-button compact"
-                      aria-label={language === 'zh' ? '移除图片' : 'Remove image'}
+                      aria-label={language === 'zh' ? '移除图片' : language === 'ja' ? '画像を削除' : 'Remove image'}
                     >
                       <X className="w-4 h-4" />
                     </button>
@@ -381,7 +424,7 @@ export default function App() {
                 <button
                   onClick={() => setShowHistory(false)}
                   className="tool-icon-button"
-                  aria-label={language === 'zh' ? '关闭记录' : 'Close history'}
+                  aria-label={language === 'zh' ? '关闭记录' : language === 'ja' ? '履歴を閉じる' : 'Close history'}
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -420,7 +463,7 @@ export default function App() {
                         <button
                           onClick={() => deleteHistoryItem(item.id)}
                           className="tool-danger-icon-button"
-                          aria-label={language === 'zh' ? '删除记录' : 'Delete history item'}
+                          aria-label={language === 'zh' ? '删除记录' : language === 'ja' ? '履歴アイテムを削除' : 'Delete history item'}
                         >
                           <Trash2 className="w-4 h-4" />
                         </button>
